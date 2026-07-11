@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buchungsanfragen - Entspannen am See</title>
+  <meta name="description" content="Buchungsanfrage f&uuml;r Ferienhaus VICKY oder HELENE in der Uckermark.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header id="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo"><img src="images/logo-dark.png" alt="Entspannen am See"><span class="logo-text">EntspannenAmSee.de</span></a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Men&uuml; &ouml;ffnen"><span></span><span></span><span></span></button>
+    <nav id="nav">
+      <a href="index.html">Start</a>
+      <a href="vicky.html">Haus VICKY</a>
+      <a href="helene.html">Haus HELENE</a>
+      <a href="anfahrt.html">Anfahrt</a>
+      <a href="umgebung.html">Umgebung</a>
+      <a href="buchung.html" class="nav-cta">Buchen</a>
+    </nav>
+  </div>
+</header>
+<section class="hero hero-small" style="background-image: url('images/banner.jpg');">
+  <div class="hero-content"><h1>Buchungsanfrage</h1><p>Sichern Sie sich Ihren Traumurlaub am Gro&szlig;en See</p></div>
+</section>
+<section>
+  <div class="container">
+    <div class="detail-layout">
+      <div>
+        <h2 class="section-title" style="text-align:left;">Anfrage senden</h2>
+        <p>F&uuml;llen Sie einfach das Formular aus. Wir melden uns umgehend bei Ihnen mit einem Angebot.</p>
+        <form action="mailto:info@EntspannenAmSee.de" method="post" enctype="text/plain">
+          <div class="form-group"><label for="name">Ihr Name</label><input type="text" id="name" name="name" required></div>
+          <div class="form-group"><label for="email">Ihre E-Mail-Adresse</label><input type="email" id="email" name="email" required></div>
+          <div class="form-group"><label for="phone">Ihre Telefonnummer</label><input type="tel" id="phone" name="phone"></div>
+          <div class="form-group">
+            <label for="haus">Gew&uuml;nschtes Ferienhaus</label>
+            <select id="haus" name="haus">
+              <option value="VICKY">Haus VICKY</option>
+              <option value="HELENE">Haus HELENE</option>
+              <option value="egal">Beide / egal</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="anreise">Anreisedatum (ab 15:00 Uhr)</label><input type="date" id="anreise" name="anreise" required></div>
+          <div class="form-group"><label for="abreise">Abreisedatum (bis 11:00 Uhr)</label><input type="date" id="abreise" name="abreise" required></div>
+          <div class="form-group">
+            <label for="persons">Anzahl Personen</label>
+            <select id="persons" name="persons">
+              <option value="1">1 Person</option>
+              <option value="2" selected>2 Personen</option>
+              <option value="3">3 Personen</option>
+              <option value="4">4 Personen</option>
+            </select>
+          </div>
+          <div class="form-group"><label for="message">Sonstiges (optional)</label><textarea id="message" name="message" placeholder="Haustiere? Besondere W&uuml;nsche? Fragen?"></textarea></div>
+          <div class="form-check"><input type="checkbox" id="agb" name="agb" required><label for="agb">Ich habe die <a href="impressum.html">AGB &amp; Hausordnung</a> gelesen und akzeptiere sie.</label></div>
+          <button type="submit" class="btn btn-dark" style="width:100%;">Anfrage absenden</button>
+        </form>
+      </div>
+      <div>
+        <div class="pricing-box">
+          <div class="price">95 &euro;</div>
+          <div class="price-sub">pro Nacht</div>
+          <ul>
+            <li>Endreinigung: 50 &euro; (einmalig)</li>
+            <li>Mindestaufenthalt: 2 N&auml;chte</li>
+            <li>Anreise: ab 15:00 Uhr</li>
+            <li>Abreise: bis 11:00 Uhr</li>
+          </ul>
+          <p style="margin-top:16px;opacity:0.8;font-size:0.9rem;">Pauschalpreis f&uuml;r bis zu 4 Personen</p>
+        </div>
+        <div class="spacer-32"></div>
+        <div class="info-card">
+          <h3>&#128222; Direkter Kontakt</h3>
+          <p style="margin-bottom:8px;">Sie erreichen uns auch pers&ouml;nlich:</p>
+          <p><strong>Telefon:</strong> (+49) 01520 2735351</p>
+          <p><strong>E-Mail:</strong> info@EntspannenAmSee.de</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div>
+      <div class="footer-logo"><img src="images/logo.png" alt="Entspannen am See"></div>
+      <p>Genie&szlig;en Sie eine Auszeit, ohne auf den Komfort des Alltags verzichten zu m&uuml;ssen.</p>
+      <div class="contact-item"><span>&#128222;</span><span>(+49) 01520 2735351</span></div>
+      <div class="contact-item"><span>&#9993;</span><span>info@EntspannenAmSee.de</span></div>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a href="impressum.html">Impressum</a>
+      <a href="impressum.html">Datenschutz</a>
+      <a href="buchung.html">Buchungsanfragen</a>
+      <a href="anfahrt.html">Anfahrt</a>
+    </div>
+    <div><h4>Adresse</h4><p>H&uuml;gelland 15<br>17291 Nordwestuckermark</p><p style="margin-top:12px;">Anreise ab 15:00 Uhr<br>Abreise bis 11:00 Uhr</p></div>
+  </div>
+  <div class="footer-bottom"><div class="container"><p>&copy; 2025 EntspannenAmSee.de &bull; Alle Rechte vorbehalten.</p></div></div>
+</footer>
+<script src="js/main.js"></script>
+</body>
+</html>
