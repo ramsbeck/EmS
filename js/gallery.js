@@ -1,4 +1,6 @@
-﻿function initGallery(galleryId) {
+﻿var loadedGalleryImages = {};
+
+function initGallery(galleryId) {
   var container = document.getElementById(galleryId);
   if (!container) return;
   var images = galleryConfig[galleryId] || [];
@@ -6,8 +8,35 @@
     container.innerHTML = '<p style="text-align:center;color:#7f8c8d;">Noch keine Bilder vorhanden.</p>';
     return;
   }
+  loadedGalleryImages[galleryId] = [];
   container.innerHTML = '';
-  images.forEach(function(src, index) {
+  var pending = images.length;
+  images.forEach(function(src) {
+    var probe = new Image();
+    probe.onload = function() {
+      loadedGalleryImages[galleryId].push(src);
+      checkDone();
+    };
+    probe.onerror = function() {
+      checkDone();
+    };
+    probe.src = 'gallery/' + galleryId + '/' + src;
+  });
+  function checkDone() {
+    pending--;
+    if (pending === 0) {
+      renderGallery(galleryId, container);
+    }
+  }
+}
+
+function renderGallery(galleryId, container) {
+  var loaded = loadedGalleryImages[galleryId] || [];
+  if (loaded.length === 0) {
+    container.innerHTML = '<p style="text-align:center;color:#7f8c8d;">Noch keine Bilder vorhanden.</p>';
+    return;
+  }
+  loaded.forEach(function(src, index) {
     var img = document.createElement('img');
     img.src = 'gallery/' + galleryId + '/' + src;
     img.alt = 'Foto ' + (index + 1);
@@ -19,7 +48,8 @@
 }
 
 function openLightbox(galleryId, index) {
-  var images = galleryConfig[galleryId] || [];
+  var images = loadedGalleryImages[galleryId] || [];
+  if (!images[index]) return;
   var lightbox = document.getElementById('lightbox');
   var lightboxImg = document.getElementById('lightbox-img');
   if (!lightbox || !lightboxImg) return;
@@ -42,7 +72,7 @@ function navigateLightbox(direction) {
   var lightbox = document.getElementById('lightbox');
   if (!lightbox || !lightbox.classList.contains('active')) return;
   var galleryId = lightbox.dataset.gallery;
-  var images = galleryConfig[galleryId] || [];
+  var images = loadedGalleryImages[galleryId] || [];
   var index = parseInt(lightbox.dataset.index) + direction;
   if (index < 0) index = images.length - 1;
   if (index >= images.length) index = 0;
