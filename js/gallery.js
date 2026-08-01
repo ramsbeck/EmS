@@ -1,4 +1,6 @@
 ﻿var loadedGalleryImages = {};
+var galleryPageSize = 9;
+var galleryLoadState = {};
 
 function initGallery(galleryId) {
   var container = document.getElementById(galleryId);
@@ -9,34 +11,13 @@ function initGallery(galleryId) {
     return;
   }
   loadedGalleryImages[galleryId] = [];
+  galleryLoadState[galleryId] = 0;
   container.innerHTML = '';
-  var pending = images.length;
-  images.forEach(function(src) {
-    var probe = new Image();
-    probe.onload = function() {
-      loadedGalleryImages[galleryId].push(src);
-      checkDone();
-    };
-    probe.onerror = function() {
-      checkDone();
-    };
-    probe.src = 'gallery/' + galleryId + '/' + src;
-  });
-  function checkDone() {
-    pending--;
-    if (pending === 0) {
-      renderGallery(galleryId, container);
-    }
-  }
-}
+  var loadBtnWrap = null;
+  var loading = false;
 
-function renderGallery(galleryId, container) {
-  var loaded = loadedGalleryImages[galleryId] || [];
-  if (loaded.length === 0) {
-    container.innerHTML = '<p style="text-align:center;color:#7f8c8d;">Noch keine Bilder vorhanden.</p>';
-    return;
-  }
-  loaded.forEach(function(src, index) {
+  function appendImg(src) {
+    var index = loadedGalleryImages[galleryId].length - 1;
     var img = document.createElement('img');
     img.src = 'gallery/' + galleryId + '/' + src;
     img.alt = 'Foto ' + (index + 1);
@@ -44,7 +25,68 @@ function renderGallery(galleryId, container) {
     img.dataset.index = index;
     img.addEventListener('click', function() { openLightbox(galleryId, index); });
     container.appendChild(img);
-  });
+  }
+
+  function updateButton() {
+    var remaining = images.length - (galleryLoadState[galleryId] || 0);
+    if (!loadBtnWrap) {
+      if (remaining <= 0) return;
+      loadBtnWrap = document.createElement('div');
+      loadBtnWrap.style.textAlign = 'center';
+      loadBtnWrap.style.marginTop = '32px';
+      var btn = document.createElement('button');
+      btn.className = 'btn btn-dark';
+      btn.id = galleryId + '-load-more';
+      btn.addEventListener('click', function() {
+        if (loading) return;
+        loadNextBatch();
+      });
+      loadBtnWrap.appendChild(btn);
+      container.parentNode.appendChild(loadBtnWrap);
+    }
+    var btn = loadBtnWrap.querySelector('button');
+    if (remaining > 0) {
+      btn.textContent = 'Weitere ' + Math.min(remaining, galleryPageSize) + ' Bilder laden';
+    } else {
+      loadBtnWrap.remove();
+      loadBtnWrap = null;
+    }
+  }
+
+  function loadNextBatch() {
+    if (loading) return;
+    loading = true;
+    var start = galleryLoadState[galleryId] || 0;
+    var batch = images.slice(start, start + galleryPageSize);
+    galleryLoadState[galleryId] = start + batch.length;
+    var pending = batch.length;
+    if (pending === 0) {
+      loading = false;
+      if (loadBtnWrap) loadBtnWrap.remove();
+      return;
+    }
+    batch.forEach(function(src) {
+      var probe = new Image();
+      probe.onload = function() {
+        loadedGalleryImages[galleryId].push(src);
+        appendImg(src);
+        done();
+      };
+      probe.onerror = function() {
+        done();
+      };
+      probe.src = 'gallery/' + galleryId + '/' + src;
+    });
+    function done() {
+      pending--;
+      if (pending === 0) {
+        loading = false;
+        updateButton();
+      }
+    }
+  }
+
+  loadNextBatch();
 }
 
 function openLightbox(galleryId, index) {
